@@ -9,6 +9,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   User,
@@ -94,6 +96,30 @@ export async function signInWithGoogle(): Promise<User | null> {
     return result.user
   } catch {
     return null
+  }
+}
+
+export async function signInWithEmail(email: string, password: string): Promise<User | null> {
+  const auth = getFirebaseAuth()
+  if (!auth) return null
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password)
+    return result.user
+  } catch (error) {
+    console.error("Sign in error:", error)
+    throw error
+  }
+}
+
+export async function signUpWithEmail(email: string, password: string): Promise<User | null> {
+  const auth = getFirebaseAuth()
+  if (!auth) return null
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password)
+    return result.user
+  } catch (error) {
+    console.error("Sign up error:", error)
+    throw error
   }
 }
 
