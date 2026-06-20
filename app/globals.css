@@ -1,0 +1,407 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-dm-sans), 'DM Sans Fallback';
+  --font-sans: var(--font-dm-sans), 'DM Sans Fallback';
+  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-forest: var(--forest);
+  --color-leaf: var(--leaf);
+  --color-sky: var(--sky);
+  --color-sky-foreground: var(--sky-foreground);
+  --color-sun: var(--sun);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 16px);
+  --radius-3xl: calc(var(--radius) + 28px);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 1rem;
+
+  /* ── Page surfaces ── */
+  --background: #f0fdf4;
+  --foreground: #0a1f14;
+
+  --card: #ffffff;
+  --card-foreground: #0a1f14;
+
+  --popover: #ffffff;
+  --popover-foreground: #0a1f14;
+
+  /* ── Brand: vibrant emerald ── */
+  --primary: #059669;
+  --primary-foreground: #ffffff;
+
+  --secondary: #dcfce7;
+  --secondary-foreground: #065f46;
+
+  --muted: #d1fae5;
+  --muted-foreground: #4b7a62;
+
+  --accent: #ecfdf5;
+  --accent-foreground: #065f46;
+
+  --destructive: #ef4444;
+
+  --border: #a7f3d0;
+  --input: #bbf7d0;
+  --ring: #059669;
+
+  /* ── Custom brand tokens ── */
+  --forest: #065f46;
+  --leaf: #10b981;
+  --sky: #0ea5e9;
+  --sky-foreground: #ffffff;
+  --sun: #fbbf24;
+
+  /* ── Charts ── */
+  --chart-1: #059669;
+  --chart-2: #10b981;
+  --chart-3: #34d399;
+  --chart-4: #6ee7b7;
+  --chart-5: #a7f3d0;
+
+  /* ── Sidebar ── */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0a1f14;
+  --sidebar-primary: #059669;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ecfdf5;
+  --sidebar-accent-foreground: #065f46;
+  --sidebar-border: #a7f3d0;
+  --sidebar-ring: #059669;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   GLASSMORPHISM — used by insights, challenges
+   ───────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  box-shadow: 0 8px 32px rgba(5, 150, 105, 0.08), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+/* Dark glass — for dark-bg sections */
+.glass-dark {
+  background: rgba(6, 95, 70, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ─────────────────────────────────────────────
+   HERO — dark canopy section for glass text
+   ───────────────────────────────────────────── */
+.hero-dark {
+  background: linear-gradient(160deg, #011c0d 0%, #042f1e 40%, #0a3d25 70%, #042f1e 100%);
+}
+
+.hero-dark-radial {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16, 185, 129, 0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 20% 100%, rgba(5, 150, 105, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 100%, rgba(6, 95, 70, 0.2) 0%, transparent 60%),
+    linear-gradient(180deg, #010f07 0%, #021a0d 50%, #011408 100%);
+}
+
+/* ─────────────────────────────────────────────
+   CANOPY IMPACT text — luminous emerald glass
+   ───────────────────────────────────────────── */
+.canopy-impact-text {
+  color: transparent;
+  background: linear-gradient(
+    135deg,
+    #6ee7b7 0%,
+    #34d399 15%,
+    #ffffff 30%,
+    #a7f3d0 45%,
+    #10b981 60%,
+    #ffffff 75%,
+    #6ee7b7 90%,
+    #34d399 100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 0px transparent;
+  filter: drop-shadow(0 0 40px rgba(52, 211, 153, 0.6)) drop-shadow(0 4px 20px rgba(16, 185, 129, 0.4));
+  animation: canopy-shimmer 6s linear infinite;
+}
+
+@keyframes canopy-shimmer {
+  0% { background-position: 300% center; }
+  100% { background-position: 0% center; }
+}
+
+/* ─────────────────────────────────────────────
+   GRADIENT BACKGROUNDS
+   ───────────────────────────────────────────── */
+.bg-emerald-gradient {
+  background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+}
+
+.bg-glow-card {
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(236,253,245,0.6) 100%);
+  border: 1px solid rgba(167, 243, 208, 0.6);
+  box-shadow: 0 4px 24px rgba(5, 150, 105, 0.08), 0 1px 0 rgba(255,255,255,0.9) inset;
+}
+
+/* ─────────────────────────────────────────────
+   EXISTING ANIMATIONS
+   ───────────────────────────────────────────── */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(8deg); }
+}
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(-6deg); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+@keyframes leaf-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes bird-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  70% { transform: scale(1.25); opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes rise-in {
+  0% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes ecosystem-grow {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes celebration-toast {
+  0% { transform: translate(-50%, -20px); opacity: 0; }
+  15% { transform: translate(-50%, 0); opacity: 1; }
+  85% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, -20px); opacity: 0; }
+}
+@keyframes score-tick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); color: #10b981; }
+}
+@keyframes stage-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  50% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0.18); }
+}
+@keyframes butterfly-flutter {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.3); }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.animate-float-slow       { animation: float-slow 9s ease-in-out infinite; }
+.animate-float-medium     { animation: float-medium 7s ease-in-out infinite; }
+.animate-sway             { transform-origin: bottom center; animation: sway 6s ease-in-out infinite; }
+.animate-bird-bob         { animation: bird-bob 3.5s ease-in-out infinite; }
+.animate-pulse-ring       { animation: pulse-ring 3s ease-out infinite; }
+.animate-rise-in          { animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-ecosystem-grow   { animation: ecosystem-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-celebration-toast { animation: celebration-toast 3.5s ease-in-out both; }
+.animate-score-tick       { animation: score-tick 0.4s ease-in-out; }
+.animate-stage-glow       { animation: stage-glow 2s ease-in-out infinite; }
+.animate-butterfly-flutter { animation: butterfly-flutter 0.3s ease-in-out infinite; }
+.animate-glow-pulse       { animation: glow-pulse 3s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow, .animate-float-medium, .animate-sway,
+  .animate-bird-bob, .animate-pulse-ring, .animate-rise-in,
+  .animate-ecosystem-grow, .animate-celebration-toast,
+  .animate-score-tick, .animate-stage-glow, .animate-butterfly-flutter,
+  .animate-glow-pulse, .canopy-impact-text {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   PREMIUM ECOSYSTEM ANIMATIONS
+   ───────────────────────────────────────────────────────────────────── */
+
+@keyframes leaf-fall {
+  0%   { transform: translate(0, 0) rotate(0deg);    opacity: 0.8; }
+  100% { transform: translate(22px, 70px) rotate(130deg); opacity: 0; }
+}
+@keyframes sun-breathe {
+  0%, 100% { opacity: 0.88; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.06); }
+}
+@keyframes petal-drift {
+  0%   { transform: translateY(0) rotate(0deg);    opacity: 0; }
+  12%  { opacity: 0.7; }
+  88%  { opacity: 0.35; }
+  100% { transform: translateY(-90px) rotate(55deg); opacity: 0; }
+}
+@keyframes score-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes fade-up {
+  0%   { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+@keyframes scale-in {
+  0%   { transform: scale(0.93); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-4px); }
+}
+
+.animate-sun-breathe  { animation: sun-breathe 4.5s ease-in-out infinite; }
+.animate-petal-drift  { animation: petal-drift 7s ease-in-out infinite; }
+.animate-leaf-fall    { animation: leaf-fall 4.5s ease-in forwards; }
+.animate-fade-up      { animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-scale-in     { animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-gentle-bob   { animation: gentle-bob 3.5s ease-in-out infinite; }
+
+/* Shimmer score text */
+.score-shimmer {
+  background: linear-gradient(90deg,
+    #065f46 0%,
+    #059669 35%,
+    #34d399 50%,
+    #059669 65%,
+    #065f46 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: score-shimmer 3.5s linear infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   MICRO-INTERACTION UTILITIES
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Hover lift with spring */
+.hover-lift {
+  transition:
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(5, 150, 105, 0.14);
+}
+
+/* Card elevation */
+.card-interactive {
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1),
+    box-shadow 0.2s ease;
+}
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(5, 150, 105, 0.12);
+}
+.card-interactive:active {
+  transform: scale(0.98);
+}
+
+/* Button press */
+.btn-press {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.btn-press:active {
+  transform: scale(0.96);
+  opacity: 0.88;
+}
+
+/* Smooth color transitions for ecosystem stage changes */
+.eco-transition {
+  transition: background 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.8s ease;
+}
+
+/* Ecosystem score ring pulse */
+@keyframes score-ring {
+  0%   { stroke-dashoffset: 283; opacity: 0.4; }
+  60%  { opacity: 1; }
+  100% { stroke-dashoffset: 0;   opacity: 1; }
+}
+.animate-score-ring { animation: score-ring 1.2s cubic-bezier(0.4, 0, 0.2, 1) both; }
+
+/* Ecosystem upgrade cinematic flash */
+@keyframes eco-upgrade-flash {
+  0%   { opacity: 0; }
+  10%  { opacity: 0.35; }
+  60%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+.animate-eco-upgrade { animation: eco-upgrade-flash 1.4s ease-out both; }
