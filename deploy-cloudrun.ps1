@@ -4,7 +4,10 @@
 $PROJECT_ID = "canopy-6c63a"
 $REGION     = "asia-south1"
 $SERVICE    = "canopy"
-$IMAGE      = "$REGION-docker.pkg.dev/$PROJECT_ID/$SERVICE/$SERVICE`:latest"
+$TAG        = (Get-Date -Format "yyyyMMdd-HHmmss")   # unique tag each run
+$REGISTRY   = "$REGION-docker.pkg.dev/$PROJECT_ID/$SERVICE/$SERVICE"
+$IMAGE      = "$REGISTRY`:$TAG"
+$IMAGE_LATEST = "$REGISTRY`:latest"
 
 # Load .env.local
 $envFile = Join-Path $PSScriptRoot ".env.local"
@@ -16,7 +19,7 @@ Get-Content $envFile | ForEach-Object {
 
 $gcloud = "gcloud"
 
-Write-Host "Canopy GCP Deploy" -ForegroundColor Green
+Write-Host "Canopy GCP Deploy (tag: $TAG)" -ForegroundColor Green
 
 # 1. Set project
 Write-Host "[1/4] Set project" -ForegroundColor Cyan
@@ -26,26 +29,13 @@ Write-Host "[1/4] Set project" -ForegroundColor Cyan
 Write-Host "[2/4] Enable APIs" -ForegroundColor Cyan
 & $gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
 
-# 3. Create repo
-Write-Host "[3/4] Create registry repo" -ForegroundColor Cyan
+# 3. Create repo (ignore if exists)
+Write-Host "[3/4] Ensure registry repo" -ForegroundColor Cyan
 & $gcloud artifacts repositories create $SERVICE --repository-format=docker --location=$REGION 2>&1 | Out-Null
 
-# 4. Submit build to Cloud Build with env file
-Write-Host "[4/4] Cloud Build + Deploy (8-10 mins)..." -ForegroundColor Cyan
+# 4. Write fresh cloudbuild yaml with unique tag
+Write-Host "[4/4] Cloud Build + Deploy (~8 mins)..." -ForegroundColor Cyan
 
-# Write a temp .env for build args
-$buildEnv = @"
-NEXT_PUBLIC_FIREBASE_API_KEY=$NEXT_PUBLIC_FIREBASE_API_KEY
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=$NEXT_PUBLIC_FIREBASE_PROJECT_ID
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-NEXT_PUBLIC_FIREBASE_APP_ID=$NEXT_PUBLIC_FIREBASE_APP_ID
-GEMINI_API_KEY=$GEMINI_API_KEY
-"@
-$buildEnv | Out-File -FilePath ".\.env.build" -Encoding ascii
-
-# Write inline cloudbuild yaml to avoid substitution escaping issues
 $cbYaml = @"
 steps:
   - name: 'gcr.io/cloud-builders/docker'
@@ -67,9 +57,11 @@ steps:
       - 'GEMINI_API_KEY=$GEMINI_API_KEY'
       - '-t'
       - '$IMAGE'
+      - '-t'
+      - '$IMAGE_LATEST'
       - '.'
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '$IMAGE']
+    args: ['push', '--all-tags', '$REGISTRY']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -97,6 +89,7 @@ steps:
       - NODE_ENV=production,NEXT_TELEMETRY_DISABLED=1,NEXT_PUBLIC_FIREBASE_API_KEY=$NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,NEXT_PUBLIC_FIREBASE_PROJECT_ID=$NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,NEXT_PUBLIC_FIREBASE_APP_ID=$NEXT_PUBLIC_FIREBASE_APP_ID,GEMINI_API_KEY=$GEMINI_API_KEY
 images:
   - '$IMAGE'
+  - '$IMAGE_LATEST'
 options:
   machineType: E2_HIGHCPU_8
   logging: CLOUD_LOGGING_ONLY
@@ -107,11 +100,10 @@ $cbYaml | Out-File -FilePath ".\cloudbuild-deploy.yaml" -Encoding ascii
 
 & $gcloud builds submit . --config cloudbuild-deploy.yaml --timeout=20m
 
-# Cleanup temp files
-Remove-Item ".\.env.build" -ErrorAction SilentlyContinue
+# Cleanup
 Remove-Item ".\cloudbuild-deploy.yaml" -ErrorAction SilentlyContinue
 
-# Get URL
+# Result
 Write-Host ""
 Write-Host "Done!" -ForegroundColor Green
 $URL = & $gcloud run services describe $SERVICE --region $REGION --format="value(status.url)" 2>&1
