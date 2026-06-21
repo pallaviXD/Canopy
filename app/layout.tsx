@@ -31,6 +31,13 @@ export const metadata: Metadata = {
     'Canopy helps you understand, track, and reduce your carbon footprint through daily activity logging, AI-powered coaching, challenges, and a living ecosystem that grows with every choice.',
   keywords: ['carbon footprint', 'sustainability', 'climate', 'eco tracker', 'green living', 'Gemini AI'],
   authors: [{ name: 'Canopy' }],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-dark-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
+  },
   openGraph: {
     title: 'Canopy — Grow your impact. Shrink your footprint.',
     description: 'Track, reduce, and grow — one eco-choice at a time.',
