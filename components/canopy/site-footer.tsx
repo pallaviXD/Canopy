@@ -2,9 +2,24 @@ import Link from "next/link"
 import { CanopyLogo } from "@/components/canopy/canopy-logo"
 
 const columns = [
-  { title: "Product", links: ["Features", "AI Coach", "Challenges", "Insights"] },
-  { title: "Company", links: ["About", "Careers", "Blog", "Press"] },
-  { title: "Resources", links: ["Help Center", "Carbon Guide", "Community", "Privacy"] },
+  { title: "Product", links: [
+    { label: "Features", href: "#features" },
+    { label: "AI Coach", href: "#ai-coach" },
+    { label: "Challenges", href: "#challenges" },
+    { label: "Insights", href: "#insights" },
+  ]},
+  { title: "Company", links: [
+    { label: "About", href: "#" },
+    { label: "Blog", href: "/blog" },
+    { label: "Careers", href: "#" },
+    { label: "Press", href: "#" },
+  ]},
+  { title: "Resources", links: [
+    { label: "Help Center", href: "#" },
+    { label: "Carbon Guide", href: "/blog/understanding-your-carbon-footprint" },
+    { label: "Community", href: "#" },
+    { label: "Privacy", href: "#" },
+  ]},
 ]
 
 export function SiteFooter() {
@@ -36,10 +51,10 @@ export function SiteFooter() {
               <p className="text-sm font-bold text-forest">{col.title}</p>
               <ul className="mt-4 space-y-3">
                 {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                      {l}
-                    </a>
+                  <li key={l.label}>
+                    <Link href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                      {l.label}
+                    </Link>
                   </li>
                 ))}
               </ul>

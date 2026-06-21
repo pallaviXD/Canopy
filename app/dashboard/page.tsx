@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { AuthGuard } from "@/components/canopy/auth-guard"
 import {
   Plane, Utensils, Zap, ShoppingBag, Bot,
   Bus, Salad, Bell, Flame, TrendingDown,
@@ -29,6 +30,14 @@ const QUICK_ACTIONS: Array<{ label: string; icon: typeof Plane; tint: string; ca
 const DEFAULT_CHALLENGES: ChallengeId[] = ["public_transit_twice", "skip_meat_3_meals"]
 
 export default function DashboardPage() {
+  return (
+    <AuthGuard>
+      <DashboardContent />
+    </AuthGuard>
+  )
+}
+
+function DashboardContent() {
   const [active, setActive] = useState("Dashboard")
   const { startChallenge, recompute } = useCanopyStore()
   const streakData = useCanopyStore(selectStreak)
@@ -57,6 +66,8 @@ export default function DashboardPage() {
     </div>
   )
 }
+
+// ── End of DashboardContent ──
 
 function TopBar({ active, streakDays }: { active: string; streakDays: number }) {
   const openLogModal = useCanopyStore((s) => s.openLogModal)

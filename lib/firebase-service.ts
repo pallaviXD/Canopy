@@ -4,7 +4,7 @@
  * Initialize Firebase once with environment variables.
  */
 
-import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app"
+import { FirebaseApp } from "firebase/app"
 import {
   getAuth,
   GoogleAuthProvider,
@@ -38,44 +38,32 @@ import {
 import { ActivityLog } from "./carbon-engine"
 import { ChallengeProgress } from "./challenge-engine"
 import { UnlockedAchievement } from "./achievement-engine"
+import { getFirebaseApp } from "./firebase-config"
 
 // ---------------------------------------------------------------------------
-// Firebase config from env vars
+// Firebase app singleton (delegated to firebase-config.ts)
 // ---------------------------------------------------------------------------
-const firebaseConfig = {
-  apiKey:            process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain:        process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId:         process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket:     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId:             process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
-
-let app: FirebaseApp
+let app: FirebaseApp | null = null
 let firestoreEnabled = false
 
 export function initFirebase() {
-  if (!firebaseConfig.apiKey) return null // Not configured yet
-  app = getApps().length ? getApp() : initializeApp(firebaseConfig)
+  app = getFirebaseApp()
   return app
 }
 
 export function getFirebaseAuth() {
-  if (!app) initFirebase()
+  if (!app) app = getFirebaseApp()
   if (!app) return null
   return getAuth(app)
 }
 
 export function getFirebaseDb() {
-  if (!app) initFirebase()
+  if (!app) app = getFirebaseApp()
   if (!app) return null
   const db = getFirestore(app)
   if (!firestoreEnabled) {
-    // Enable offline persistence once
     if (typeof window !== "undefined") {
-      enableIndexedDbPersistence(db).catch(() => {
-        // Already enabled or multi-tab — safe to ignore
-      })
+      enableIndexedDbPersistence(db).catch(() => {})
       firestoreEnabled = true
     }
   }

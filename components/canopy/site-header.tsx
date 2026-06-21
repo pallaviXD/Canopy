@@ -11,7 +11,7 @@ const navItems = [
   { label: "Features", href: "#features" },
   { label: "AI Coach", href: "#ai-coach" },
   { label: "Challenges", href: "#challenges" },
-  { label: "Insights", href: "#insights" },
+  { label: "Blog", href: "/blog" },
 ]
 
 export function SiteHeader() {
@@ -42,19 +42,29 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-7 lg:flex">
           {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-            >
-              {item.label}
-            </a>
+            item.href.startsWith("/") ? (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                {item.label}
+              </a>
+            )
           ))}
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
           <Button
-            render={<Link href="/dashboard" />}
+            render={<Link href="/login" />}
             variant="ghost"
             className="rounded-full font-medium text-forest hover:bg-emerald-50 hover:text-primary"
           >

@@ -11,11 +11,15 @@ interface AuthLayoutProps {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   // Use a preview state for the visual side
-  const previewEcoState = getEcosystemState(
-    { score: 85, level: 3, items: [], unlockedItems: [] },
-    500,
-    3
-  )
+  const previewEcoState = getEcosystemState({
+    canopyScore: 85,
+    completedChallenges: 3,
+    totalChallenges: 5,
+    streakDays: 7,
+    weeklyEmissions: 12,
+    previousWeekEmissions: 18,
+    totalLogsCount: 25,
+  })
 
   return (
     <div className="min-h-screen w-full flex bg-background">
