@@ -16,7 +16,7 @@
 [![GCP](https://img.shields.io/badge/GCP-Cloud%20Run-4285F4?logo=googlecloud)](https://cloud.google.com/run)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[Live Demo](#) · [Blog](/blog) · [Google Solution Challenge](https://developers.google.com/community/gdsc-solution-challenge)
+[🌐 Live Demo](https://canopy-738945954126.asia-south1.run.app) · [Blog](https://canopy-738945954126.asia-south1.run.app/blog) · [Google Solution Challenge](https://developers.google.com/community/gdsc-solution-challenge)
 
 </div>
 
@@ -32,7 +32,23 @@ Built for the **Google Solution Challenge**, Canopy targets **UN SDG 13: Climate
 
 ---
 
-## ✨ Key Features
+## 🌐 Live Deployment
+
+**Production URL:** https://canopy-738945954126.asia-south1.run.app
+
+Deployed on **Google Cloud Run** (`asia-south1` — Mumbai region) via Cloud Build. No Docker required locally — the entire build pipeline runs on GCP.
+
+| Page | URL |
+|---|---|
+| Landing | https://canopy-738945954126.asia-south1.run.app |
+| Sign Up | https://canopy-738945954126.asia-south1.run.app/signup |
+| Login | https://canopy-738945954126.asia-south1.run.app/login |
+| Dashboard | https://canopy-738945954126.asia-south1.run.app/dashboard |
+| Blog | https://canopy-738945954126.asia-south1.run.app/blog |
+
+---
+
+
 
 ### 🔐 Firebase Authentication
 - Email/Password sign-up and login
@@ -334,6 +350,6 @@ Built with 🌱 for the **Google Solution Challenge**
 
 **Canopy — Grow your impact. Shrink your footprint.**
 
-[![Deploy to GCP](https://img.shields.io/badge/Deploy-Google%20Cloud%20Run-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/run)
+[![Deploy to GCP](https://img.shields.io/badge/Deploy-Google%20Cloud%20Run-4285F4?logo=googlecloud&logoColor=white)](https://canopy-738945954126.asia-south1.run.app)
 
 </div>
